@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { WinstonLogger } from './common/winston.logger';
-import { PrismaService } from './common/prisma.service';
 
 async function bootstrap() {
   const customeLogger = new WinstonLogger();
