@@ -4,6 +4,8 @@ import { PrismaService } from "./prisma.service";
 import { KEYV_INSTACE, KeyvProvider } from "./keyv.provider";
 import Keyv from "keyv";
 import { RedisClientType } from "@keyv/redis";
+import { APP_FILTER } from "@nestjs/core";
+import { ErrorFilter } from "../utils/error.filter";
 
 @Global()
 @Module({
@@ -14,7 +16,11 @@ import { RedisClientType } from "@keyv/redis";
     ],
     providers: [
         PrismaService,
-        KeyvProvider
+        KeyvProvider,
+        {
+            provide: APP_FILTER,
+            useClass: ErrorFilter
+        }
     ],
     exports: [
         PrismaService,
