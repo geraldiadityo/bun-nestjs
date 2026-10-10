@@ -3,6 +3,9 @@ import { DocumentCounterModule } from "../document-counter/document-counter.modu
 import { PegawaiRepository } from "./pegawai/pegawai.repository";
 import { PegawaiService } from "./pegawai/pegawai.service";
 import { PegawaiController } from "./pegawai/pegawai.controller";
+import { RoleRepository } from "./role/role.repository";
+import { RoleService } from "./role/role.service";
+import { RoleController } from "./role/role.controller";
 
 @Module({
     imports: [
@@ -10,13 +13,18 @@ import { PegawaiController } from "./pegawai/pegawai.controller";
     ],
     providers: [
         PegawaiRepository,
-        PegawaiService
+        PegawaiService,
+
+        RoleRepository,
+        RoleService
     ],
     controllers: [
-        PegawaiController
+        PegawaiController,
+        RoleController
     ],
     exports: [
-        PegawaiService
+        PegawaiService,
+        RoleService
     ]
 })
 export class PenggunaModule {}
