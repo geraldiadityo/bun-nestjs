@@ -57,14 +57,10 @@ export class PrismaService extends PrismaClient<Prisma.PrismaClientOptions, 'que
     }
 
     async onModuleDestroy() {
-        if (process.env.NODE_ENV !== 'production') {
-            await this.closeConnection('on module destroy (Dev mod)')
-        }
+        await this.closeConnection('on module destroy');
     }
 
     async onApplicationShutdown(signal?: string) {
-        if (process.env.NODE_ENV !== 'production') {
-            await this.closeConnection(`on application shutdown (prod mode) - signal: ${signal}`)
-        }
+        await this.closeConnection(`on application shutdown - signal: ${signal}`, signal);
     }
 }

@@ -75,15 +75,13 @@ export class CommonModule implements NestModule, OnApplicationShutdown, OnModule
     }
 
     async onModuleDestroy() {
-        if (process.env.NODE_ENV !== 'production'){
-            await this.closeRedisConnection('on module destroy (DEV mode)', 'SIGINT');
-        }
+        // Fallback jika onApplicationShutdown tidak terpanggil (contoh: di beberapa unit test)
+        await this.closeRedisConnection('on module destroy', 'SIGINT');
     }
 
     async onApplicationShutdown(signal?: string) {
-        if (process.env.NODE_ENV === 'production'){
-            await this.closeRedisConnection('on application shutdown (PROD mode)', signal)
-        }
+        // app.close() dari main.ts akan men-trigger fungsi ini
+        await this.closeRedisConnection('on application shutdown', signal);
     }
 
     configure(consumer: MiddlewareConsumer) {
