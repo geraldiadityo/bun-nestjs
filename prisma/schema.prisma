@@ -23,6 +23,13 @@ model Pegawai {
   @@map("pegawai")
 }
 
+model Role {
+  id   Int    @id @default(autoincrement())
+  nama String @unique
+
+  @@map("role")
+}
+
 model DocumentCounter {
   document_type String
   date          DateTime @db.Date
