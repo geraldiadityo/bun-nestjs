@@ -1,0 +1,1 @@
+console.log('Listening'); process.on('SIGINT', () => { console.log('SIGINT received'); process.exit(0); }); setTimeout(() => {}, 100000);

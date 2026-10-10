@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { CommonModule } from './common/common.module';
+import { DocumentCounterModule } from './document-counter/document-counter.module';
+import { PenggunaModule } from './pengguna/pengguna.module';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -13,6 +15,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     //   serviceId: 'testing-bun',
     // }),
     CommonModule,
+    DocumentCounterModule,
+    PenggunaModule
   ],
   controllers: [],
   providers: [],
