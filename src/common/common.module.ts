@@ -1,17 +1,31 @@
 import { Global, Inject, Logger, MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, OnModuleDestroy } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PrismaService } from "./prisma.service";
 import { KEYV_INSTACE, KeyvProvider } from "./keyv.provider";
 import Keyv from "keyv";
 import { RedisClientType } from "@keyv/redis";
 import { APP_FILTER } from "@nestjs/core";
 import { ErrorFilter } from "../utils/error.filter";
-
+import { JwtModule } from '@nestjs/jwt';
 @Global()
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true
+        }),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService) => {
+                const secret = configService.get<string>('JWT_SECRET_KEY');
+                const expiresIn = configService.get<string>('JWT_EXPIRATION_TIME', '30m');
+                return {
+                    secret: secret,
+                    signOptions: {
+                        expiresIn: (expiresIn || '15m') as any
+                    }
+                }
+            }
         })
     ],
     providers: [
@@ -24,6 +38,7 @@ import { ErrorFilter } from "../utils/error.filter";
     ],
     exports: [
         PrismaService,
+        JwtModule,
         KeyvProvider
     ]
 })
