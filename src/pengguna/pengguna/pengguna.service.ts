@@ -247,4 +247,19 @@ export class PenggunaService {
         this.logger.log(`success change status pengguna with id: ${updatedDta.id}`)
         return this.toPenggunaResponse(updatedDta)
     }
+
+    async updateRefreshToken(
+        id: number,
+        hash: string | null,
+        tx?: Prisma.TransactionClient
+    ): Promise<void> {
+        this.logger.log(`starting update hash refresh token with pengguna id: ${id}`)
+        const currentData = await this.penggunaMustExist(id, tx);
+        const dataSender: Partial<Pengguna> = {
+           refresh_token: hash
+        }
+        
+        const updatedData = await this.repo.update(currentData.id, dataSender, tx);
+        this.logger.log(`success update refresh token hash pengguna ID :${updatedData.id}`)
+    }
 }
