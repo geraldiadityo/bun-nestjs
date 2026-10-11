@@ -15,19 +15,37 @@ datasource db {
 }
 
 model Pegawai {
-  id   Int    @id @default(autoincrement())
-  nk   String @unique
-  nama String
+  id        Int        @id @default(autoincrement())
+  nk        String     @unique
+  nama      String
+  penggunas Pengguna[]
 
   @@index([nama(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("pegawai")
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  nama String @unique
+  id        Int        @id @default(autoincrement())
+  nama      String     @unique
+  penggunas Pengguna[]
 
   @@map("role")
+}
+
+model Pengguna {
+  id            Int     @id @default(autoincrement())
+  username      String  @unique
+  pegawaiId     Int
+  pegawai       Pegawai @relation(fields: [pegawaiId], references: [id], onDelete: Cascade)
+  roleId        Int
+  role          Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  password      String
+  refresh_token String?
+  status        Boolean @default(true)
+
+  @@index([pegawaiId])
+  @@index([roleId])
+  @@map("pengguna")
 }
 
 model DocumentCounter {
